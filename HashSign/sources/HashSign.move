@@ -1,5 +1,5 @@
 module HashSign::hash_sign {
-    // use std::string::String;
+    use std::string::String;
     use std::vector;
     use aptos_framework::account;
     use aptos_framework::event;
