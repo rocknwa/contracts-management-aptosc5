@@ -68,7 +68,7 @@ module HashSign::hash_sign_01 {
     // Create a new document
     public entry fun create_document(creator: &signer, content_hash: String, signers: vector<address>) acquires GlobalDocumentStore, EventStore {
         // Get the creator's address
-        let creator_address = signer::address_of(creator); // ASSIGNMENT #5
+        let creator_address = std::signer::address_of(creator); // ASSIGNMENT #5
         // Borrow a mutable reference to the GlobalDocumentStore
         let store = borrow_global_mut<GlobalDocumentStore>(@HashSign); // ASSIGNMENT #6
         // Borrow a mutable reference to the EventStore
@@ -106,7 +106,7 @@ module HashSign::hash_sign_01 {
     // Sign a document
     public entry fun sign_document(signer: &signer, document_id: u64) acquires GlobalDocumentStore, EventStore {
         // Get the signer's address
-        let signer_address = signer::address_of(signer); // ASSIGNMENT #11
+        let signer_address = std::signer::address_of(signer); // ASSIGNMENT #11
         // Borrow a mutable reference to the GlobalDocumentStore
         let store = borrow_global_mut<GlobalDocumentStore>(@HashSign); // ASSIGNMENT #12
         
