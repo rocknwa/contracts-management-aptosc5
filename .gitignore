@@ -1,7 +1,7 @@
 # Aptos related files
 .aptos
 hashSign/build
-hashSign/.aptos/
+hashSign/.aptos
 
 # Logs
 logs
