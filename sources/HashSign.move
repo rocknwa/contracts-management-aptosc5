@@ -109,6 +109,7 @@ module HashSign::hash_sign_01 {
         let signer_address = std::signer::address_of(signer); // ASSIGNMENT #11
         // Borrow a mutable reference to the GlobalDocumentStore
         let store = borrow_global_mut<GlobalDocumentStore>(@HashSign); // ASSIGNMENT #12
+        // Borrow a mutable reference to the EventStore
         let event_store = borrow_global_mut<EventStore>(@HashSign);
         
         // Ensure the document_id is within bounds
