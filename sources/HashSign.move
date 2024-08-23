@@ -8,9 +8,9 @@ module HashSign::hash_sign_01 {
     use aptos_std::simple_map::{Self, SimpleMap};  // Simple map library for key-value storage
 
     // Define the structure to store document details
-    struct Document has key, store {
+    struct Document has store, drop, copy {
         id: u64,                        // Unique identifier for the document
-        content_hash: vector<u8>,       // Hash of the document content
+        content_hash: String,           // Hash of the document content
         creator: address,               // Address of the document creator
         signers: vector<address>,       // List of addresses who are signers of the document
         signatures: vector<Signature>,  // List of signatures added to the document
@@ -81,7 +81,7 @@ module HashSign::hash_sign_01 {
             // Assign a unique ID based on the document counter
             id: store.document_counter,  
             // Store the provided content hash
-            content_hash: content_hash.into_bytes(),
+            content_hash,
             // Store the creator's address  
             creator: YOUR_CODE_GOES_HERE, // ASSIGNMENT #4
             // Store the provided list of signers 
@@ -111,6 +111,8 @@ module HashSign::hash_sign_01 {
         let signer_address = std::YOUR_CODE_GOES_HERE::address_of(signer); // ASSIGNMENT #8
         // Borrow a mutable reference to the GlobalDocumentStore
         let store = YOUR_CODE_GOES_HERE<GlobalDocumentStore>(@HashSign); // ASSIGNMENT #9
+        // Borrow a mutable reference to the EventStore
+        let event_store = borrow_global_mut<EventStore>(@HashSign);
         
         // Ensure the document_id is within bounds
         assert!(simple_map::contains_key(&store.documents, &document_id), 3); 
@@ -132,7 +134,7 @@ module HashSign::hash_sign_01 {
         vector::YOUR_CODE_GOES_HERE(&mut document.signatures, signature); // ASSIGNMENT #10
 
         // Emit an event to signal the signing of the document
-        event::emit_event(&mut store.sign_document_events, SignDocumentEvent {
+        event::emit_event(&mut event_store.sign_document_events, SignDocumentEvent {
             document_id,  // Store the document ID in the event
             signer: signer_address,  // Store the signer's address in the event
         });
