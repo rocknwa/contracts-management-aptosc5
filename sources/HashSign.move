@@ -50,24 +50,24 @@ module HashSign::hash_sign_01 {
         // Create a new DocumentStore object and initialize its fields
         let store = DocumentStore {
             // Initialize an empty vector for documents
-            documents: YOUR_CODE_GOES_HERE,  // ASSIGNMENT #1
+            documents: vector::empty(),  // ASSIGNMENT #1
             // Initialize the document counter to 0 
-            document_counter: YOUR_CODE_GOES_HERE,  // ASSIGNMENT #2
+            document_counter: 0,  // ASSIGNMENT #2
             // Create an event handle for document creation events
             create_document_events: account::new_event_handle<CreateDocumentEvent>(account),  
             // Create an event handle for document signing events
-            sign_document_events: account::new_event_handle<YOUR_CODE_GOES_HERE,  // ASSIGNMENT #3
+            sign_document_events: account::new_event_handle<SignDocumentEvent>(account),  // ASSIGNMENT #3
         };
         // Move the created DocumentStore to the specified account
-        move_to(YOUR_CODE_GOES_HERE, YOUR_CODE_GOES_HERE);  // ASSIGNMENT #4
+        move_to(account, store);  // ASSIGNMENT #4
     }
 
     // Create a new document
     public entry fun create_document(creator: &signer, content_hash: vector<u8>, signers: vector<address>) acquires DocumentStore {
         // Get the creator's address
-        let creator_address = signer::YOUR_CODE_GOES_HERE(creator); // ASSIGNMENT #5
+        let creator_address = signer::address_of(creator); // ASSIGNMENT #5
         // Borrow a mutable reference to the DocumentStore associated with the creator's address
-        let store = YOUR_CODE_GOES_HERE<DocumentStore>(creator_address); // ASSIGNMENT #6
+        let store = borrow_global_mut<DocumentStore>(creator_address); // ASSIGNMENT #6
         
         // Create a new Document object and initialize its fields
         let document = Document {
@@ -76,13 +76,13 @@ module HashSign::hash_sign_01 {
             // Store the provided content hash
             content_hash,
             // Store the creator's address  
-            creator: YOUR_CODE_GOES_HERE, // ASSIGNMENT #7
+            creator: creator_address, // ASSIGNMENT #7
             // Store the provided list of signers 
             signers,  
             // Initialize an empty vector for signatures
-            signatures: vector::YOUR_CODE_GOES_HERE(), // ASSIGNMENT #8
+            signatures: vector::empty(), // ASSIGNMENT #8
             // Set the document to false as not completed initially 
-            is_completed: YOUR_CODE_GOES_HERE,  // ASSIGNMENT #9
+            is_completed: false,  // ASSIGNMENT #9
         };
 
         // Add the new document to the store's documents vector
@@ -95,18 +95,18 @@ module HashSign::hash_sign_01 {
         });
 
         // Increment the document counter for the next document creation
-        store.document_counter = YOUR_CODE_GOES_HERE; // ASSIGNMENT #10
+        store.document_counter = store.document_counter + 1; // ASSIGNMENT #10
     }
 
     // Sign a document
     public entry fun sign_document(signer: &signer, document_id: u64) acquires DocumentStore {
         // Get the signer's address
-        let signer_address = YOUR_CODE_GOES_HERE; // ASSIGNMENT #11
+        let signer_address = signer::address_of(signer); // ASSIGNMENT #11
         // Borrow a mutable reference to the DocumentStore associated with the signer's address
-        let store = YOUR_CODE_GOES_HERE<DocumentStore>(signer_address); // ASSIGNMENT #12
+        let store = borrow_global_mut<DocumentStore>(signer_address); // ASSIGNMENT #12
         
         // Ensure the document_id is within bounds
-        assert!(YOUR_CODE_GOES_HERE < vector::length(&store.documents), 3); // ASSIGNMENT #13
+        assert!(document_id < vector::length(&store.documents), 3); // ASSIGNMENT #13
 
         // Borrow a mutable reference to the document with the specified ID
         let document = vector::borrow_mut(&mut store.documents, document_id);
@@ -133,18 +133,18 @@ module HashSign::hash_sign_01 {
         // Check if all signers have signed the document
         if (vector::length(&document.signatures) == vector::length(&document.signers)) {
             // If all signers have signed, mark the document as true and completed
-            document.is_completed = YOUR_CODE_GOES_HERE; // ASSIGNMENT #14
+            document.is_completed = true; // ASSIGNMENT #14
         }
     }
 
     // Get document details
     public fun get_document(creator: address, document_id: u64): (String, vector<address>, vector<Signature>, bool) acquires DocumentStore {
         // Borrow a reference to the DocumentStore associated with the creator's address
-        let store = YOUR_CODE_GOES_HERE<DocumentStore>(creator); // ASSIGNMENT #15
+        let store = borrow_global<DocumentStore>(creator); // ASSIGNMENT #15
         // Ensure the document_id is within bounds
-        assert!(YOUR_CODE_GOES_HERE < vector::length(&store.documents), 3); // ASSIGNMENT #16
+        assert!(document_id < vector::length(&store.documents), 3); // ASSIGNMENT #16
         // Borrow a reference to the document with the specified ID
-        let document = vector::YOUR_CODE_GOES_HERE(&store.documents, document_id); // ASSIGNMENT #17
+        let document = vector::borrow(&store.documents, document_id); // ASSIGNMENT #17
         
         // Return the document's content hash, signers, signatures, and completion status
         (document.content_hash, document.signers, document.signatures, document.is_completed)
