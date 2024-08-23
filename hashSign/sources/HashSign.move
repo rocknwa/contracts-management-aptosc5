@@ -1,4 +1,4 @@
-module HashSign::hash_sign_01 {
+module HashSign::hash_sign_02 {
     // Import the necessary libraries/modules
     use std::string::String;  // String handling library
     use std::vector;          // Vector (dynamic array) library
