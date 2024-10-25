@@ -56,7 +56,7 @@ module HashSign::hash_sign_01 {
             // Initialize an empty SimpleMap for documents
             documents: simple_map::create(),  
             // Initialize the document counter to 0
-            document_counter: YOUR_CODE_GOES_HERE, // ASSIGNMENT #1
+            document_counter: 0, // ASSIGNMENT #1
         });
         // Create and store the EventStore
         move_to(account, EventStore {
@@ -164,7 +164,7 @@ module HashSign::hash_sign_01 {
         let store = borrow_global<GlobalDocumentStore>(@HashSign);
         // Initialize an empty vector to store all documents
         let all_documents = vector::empty<Document>();
-        let mut i = 0;
+        let  i = 0;
         // Iterate over all possible document IDs
         while (i < store.document_counter) {
             // If the document exists, add it to the all_documents vector
